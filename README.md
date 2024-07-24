@@ -1,3 +1,9 @@
+# Fronted AI battle sim
+
+frontend part for AI battlesim project https://github.com/erga-labs/ant-sim-project
+
+> Yes the name "frontend" is misleading cause we also create API routes here but the actual game simulation takes place in Raylib(CPP)
+
 # Testing
 
 There are two routes created currently for testing if it can be call via CPP.
@@ -46,3 +52,15 @@ here the `yoursecretkey` is the secret key that is used to validate the token wh
 2. Run `npm install`
 3. Run `npm run dev`
 4. Rename the `.env.example` to `.env.local` and add the secret key.
+
+#### Notes to self
+
+WASM kinda sucks add lines above `var _glfwInit=()=>{` in emscripten-build.js
+
+```js
+var Module = Module || {};
+
+// Assign the canvas element to Module["canvas"]
+Module["canvas"] = document.getElementById("canvas");
+``;
+```
