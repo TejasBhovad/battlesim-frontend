@@ -34,3 +34,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# WebAssembly files
+/public/emscripten-build.js
+/public/emscripten-build.wasm
+/public/emscripten-build.data
+/public/emscripten-build.html
+
+public/emscripten-build.js
+public/emscripten-build.wasm
+public/emscripten-build.data
+public/emscripten-build.html
+
+public/emscripten-build.js
+public/emscripten-build.html
+public/emscripten-build.wasm
+.gitignore
