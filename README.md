@@ -64,3 +64,11 @@ var Module = Module || {};
 Module["canvas"] = document.getElementById("canvas");
 ``;
 ```
+
+## Reference
+
+https://sdk.vercel.ai/examples/next-app/basics/generating-object
+
+https://sdk.vercel.ai/examples/next-app/basics/generating-text
+
+https://sdk.vercel.ai/docs/foundations/tools
