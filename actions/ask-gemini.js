@@ -1,6 +1,6 @@
 "use server";
 
-export const AskGemini = async ({ num1, num2 }) => {
+export const AskGemini = async ({ prompt }) => {
   try {
     const authSecret = process.env.AUTH_SECRET;
     const baseUrl = process.env.BASE_URL || "http://localhost:3000"; // Ensure BASE_URL is set in your environment variables
@@ -11,7 +11,7 @@ export const AskGemini = async ({ num1, num2 }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authSecret}`,
       },
-      body: JSON.stringify({ num1, num2 }),
+      body: JSON.stringify({ prompt }),
     });
 
     if (!response.ok) {

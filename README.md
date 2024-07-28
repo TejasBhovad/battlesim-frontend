@@ -8,30 +8,6 @@ frontend part for AI battlesim project https://github.com/erga-labs/ant-sim-proj
 
 There are two routes created currently for testing if it can be call via CPP.
 
-### Passing data from queries
-
-This is a simple route that takes in a query(name) and returns greetings.
-
-the route is `http://localhost:3000/api/greet?name=John`
-
-### Passing data from body
-
-This is a simple route that takes in a two numbers and returns the sum and product.
-
-the req can be tested using cURL
-
-```bash
- curl -X POST http://localhost:3000/api/sum \
-    -H "Content-Type: application/json" \
-    -d '{"num1": 5, "num2": 10}'
-```
-
-### Random color route
-
-This is a simple route that returns a random color.
-
-`http://localhost:3000/api/color`
-
 ### Secure route
 
 This is a simple route that returns a message if the auth token is valid.
@@ -45,6 +21,19 @@ curl -X GET http://localhost:3000/api/secure \
 ```
 
 here the `yoursecretkey` is the secret key that is used to validate the token which is stored in `.env.local` file.
+
+### Asking Gemini
+
+Simple route that returns a message if the auth token is valid and API key is valid.
+
+`http://localhost:3000/api/gemini`
+
+```bash
+curl -X POST http://localhost:3000/api/gemini \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your_api_key" \
+  -d '{"prompt": "What is the capital of France?"}'
+```
 
 ### Starting the server
 

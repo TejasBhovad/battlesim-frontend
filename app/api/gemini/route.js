@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-
+import { model } from "@/utils/gemini";
+import { generateText } from "ai";
 export async function POST(req) {
   try {
     const authHeader = req.headers.get("Authorization");
@@ -13,20 +14,29 @@ export async function POST(req) {
 
     const data = await req.json();
 
-    const { num1, num2 } = data;
-    console.log("num1:", num1, "num2:", num2);
+    const { prompt } = data;
+    console.log("Prompt:", prompt);
 
-    if (typeof num1 !== "number" || typeof num2 !== "number") {
-      throw new Error("Both num1 and num2 must be valid numbers.");
+    if (!prompt) {
+      return NextResponse.json(
+        { error: "Prompt is required in the request body" },
+        { status: 400 }
+      );
     }
 
-    const sum = num1 + num2;
-    const multiplication = num1 * num2;
+    const { text } = await generateText({
+      model: model,
+      prompt: prompt,
+      system:
+        `You help planning travel itineraries. ` +
+        `Respond to the users' request with a list ` +
+        `of the best stops to make in their destination.` +
+        `You also like to make lot of puns`,
+    });
 
     return NextResponse.json({
-      message: "Data processed successfully!",
-      sum: sum,
-      multiplication: multiplication,
+      response: "Success",
+      response: text,
     });
   } catch (error) {
     return NextResponse.json(

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { model } from "@/utils/gemini";
-import { generateText } from "ai";
+
 import { AskGemini } from "@/actions/ask-gemini";
 
 const Page = () => {
@@ -30,11 +29,10 @@ const Page = () => {
     // });
     // console.log(text);
     // return text;
-    const num1 = 10;
-    const num2 = 20;
-    const response = await AskGemini({ num1: num1, num2: num2 });
+    const prompt = "How to get to Leaning Tower of Pisa from Florence?";
+    const response = await AskGemini({ prompt });
     console.log(response);
-    return `Sum: ${response.sum}, Multiplication: ${response.multiplication}`;
+    return response;
   };
 
   const handleClick = async () => {
