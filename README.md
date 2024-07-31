@@ -54,6 +54,23 @@ Module["canvas"] = document.getElementById("canvas");
 ``;
 ```
 
+Replace to not use relative path in `emscripten-build.js`
+
+```js
+function locateFile(filename) {
+  // Return the absolute URL for the WebAssembly file
+  return `http://localhost:3000/${filename}`;
+}
+
+function findWasmBinary() {
+  var f = "emscripten-build.wasm";
+  if (!isDataURI(f)) {
+    return locateFile(f);
+  }
+  return f;
+}
+```
+
 ## Reference
 
 https://sdk.vercel.ai/examples/next-app/basics/generating-object

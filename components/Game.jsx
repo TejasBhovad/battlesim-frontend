@@ -4,24 +4,46 @@ import { fetchGameScript } from "@/actions/proxy";
 
 export default function Game() {
   const [isMounted, setIsMounted] = useState(false);
-
+  const DEV_MODE = true;
   useEffect(() => {
     setIsMounted(true);
 
-    if (typeof window !== "undefined" && isMounted) {
-      const loadGame = async () => {
-        console.log("Loading game...");
+    if (DEV_MODE && isMounted) {
+      // Check if the script already exists
+      if (!document.getElementById("game-script")) {
+        const script = document.createElement("script");
+        script.src = "/emscripten-build.js";
+        script.id = "game-script";
+        script.async = true;
 
-        try {
-          const scriptContent = await fetchGameScript();
+        document.body.appendChild(script);
+      }
+    }
+    if (!DEV_MODE && isMounted) {
+      if (typeof window !== "undefined" && isMounted) {
+        const loadGame = async () => {
+          console.log("Loading game...");
 
-          eval(scriptContent);
-        } catch (error) {
-          console.error("Error loading game script:", error);
+          try {
+            const scriptContent = await fetchGameScript();
+
+            eval(scriptContent);
+          } catch (error) {
+            console.error("Error loading game script:", error);
+          }
+        };
+      }
+      loadGame();
+    }
+
+    if (DEV_MODE) {
+      // Cleanup function to remove the script on unmount
+      return () => {
+        const script = document.getElementById("game-script");
+        if (script) {
+          document.body.removeChild(script);
         }
       };
-
-      loadGame();
     }
   }, [isMounted]);
 
