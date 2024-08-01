@@ -1,67 +1,90 @@
 "use client";
-import React, { useState, useEffect } from "react";
-
-import { AskGemini } from "@/actions/ask-gemini";
-
+import React, { useState } from "react";
+import Link from "next/link";
 const Page = () => {
-  const [loading, setLoading] = useState(false);
-  const [generatedText, setGeneratedText] = useState("");
+  const [gameData, setGameData] = useState(null);
+  const [message, setMessage] = useState("");
 
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    return () => {
-      setIsMounted(false);
+  // Function to set game data
+  const setGameDataHandler = async () => {
+    const data = {
+      gameData: {
+        troops: 100,
+        startPosition: {
+          x: 10,
+          y: 20,
+        },
+      },
     };
-  }, []);
 
-  const queryGemini = async () => {
-    // const prompt = "How to get to Taj Mahal from Delhi?";
-    // const { text } = await generateText({
-    //   model: model,
-    //   prompt: prompt,
-    //   system:
-    //     `You help planning travel itineraries. ` +
-    //     `Respond to the users' request with a list ` +
-    //     `of the best stops to make in their destination.` +
-    //     `You also want to sell them your pen in 2 dollars`,
-    // });
-    // console.log(text);
-    // return text;
-    const prompt = "How to get to Leaning Tower of Pisa from Florence?";
-    const response = await AskGemini({ prompt });
-    console.log(response);
-    return response;
+    try {
+      const response = await fetch("/api/init", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      setMessage(result.message);
+      setGameData(result.data);
+    } catch (error) {
+      console.error("Error setting game data:", error);
+      setMessage("Failed to set game data.");
+    }
   };
 
-  const handleClick = async () => {
-    setLoading(true);
-    const text = await queryGemini();
-    setGeneratedText(text);
-    setLoading(false);
-  };
+  // Function to delete game data
+  const deleteGameDataHandler = async () => {
+    try {
+      const response = await fetch("/api/init", {
+        method: "DELETE",
+      });
 
-  if (!isMounted) {
-    return null;
-  }
+      const result = await response.json();
+      setMessage(result.message);
+      setGameData(null); // Clear local game data
+    } catch (error) {
+      console.error("Error deleting game data:", error);
+      setMessage("Failed to delete game data.");
+    }
+  };
 
   return (
-    <div className="">
-      <div className="w-full h-full bg-gray-800 items-center flex flex-col justify-center">
+    <div className="min-h-screen bg-slate-800 text-white flex flex-col items-center justify-center p-6">
+      <h1 className="text-3xl font-bold mb-4">Game Data Management</h1>
+      <div className="space-x-4">
         <button
-          onClick={handleClick}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={loading}
+          onClick={setGameDataHandler}
+          className="bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-4 rounded"
         >
-          {loading ? "Generating..." : "Generate"}
+          Set Game Data
         </button>
-        {generatedText && (
-          <div className="mt-4 p-4 bg-white text-black rounded">
-            {JSON.stringify(generatedText)}
-          </div>
-        )}
+        <button
+          onClick={deleteGameDataHandler}
+          className="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded"
+        >
+          Delete Game Data
+        </button>
+        <Link
+          href="/api/init"
+          className="bg-slate-600 hover:bg-slate-500 text-white font-semibold py-2 px-4 rounded"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View GET
+        </Link>
       </div>
+      {message && <p className="mt-4 text-lg">{message}</p>}
+      {gameData && (
+        <div className="mt-6">
+          <h2 className="text-2xl font-semibold">Current Game Data:</h2>
+          <pre className="bg-slate-700 p-4 rounded mt-2 overflow-x-auto">
+            {JSON.stringify(gameData, null, 2)}
+          </pre>
+        </div>
+      )}
     </div>
   );
 };

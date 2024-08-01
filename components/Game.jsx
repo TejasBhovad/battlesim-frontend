@@ -52,7 +52,7 @@ export default function Game() {
   }
 
   return (
-    <div>
+    <div className="w-full flex items-center justify-center h-full bg-slate-600">
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
   );

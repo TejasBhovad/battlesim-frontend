@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { model } from "@/utils/gemini";
 import { generateText } from "ai";
+
 export async function POST(req) {
   try {
     const authHeader = req.headers.get("Authorization");
@@ -14,24 +15,31 @@ export async function POST(req) {
 
     const data = await req.json();
 
-    const { prompt } = data;
-    console.log("Prompt:", prompt);
+    const { gameState } = data;
+    console.log("gameState:", gameState);
 
-    if (!prompt) {
-      return NextResponse.json(
-        { error: "Prompt is required in the request body" },
-        { status: 400 }
-      );
+    // Validate gameState object
+    const requiredParams = [
+      "attackers",
+      "defenders",
+      "wall_health",
+      "last_moves",
+      "world_size",
+    ];
+    for (const param of requiredParams) {
+      if (!gameState || !gameState[param]) {
+        return NextResponse.json(
+          { error: `Missing required gameState parameter: ${param}` },
+          { status: 400 }
+        );
+      }
     }
-
+    const prompt = `The game state is as follows: ${JSON.stringify(gameState)}`;
     const { text } = await generateText({
       model: model,
       prompt: prompt,
       system:
-        `You help planning travel itineraries. ` +
-        `Respond to the users' request with a list ` +
-        `of the best stops to make in their destination.` +
-        `You also like to make lot of puns`,
+        "You are playing a game of Tower Defense. choose what would you do attack, fallback or defend the walls you have only limted no of troops you can direct them to any tile in given game size",
     });
 
     return NextResponse.json({
