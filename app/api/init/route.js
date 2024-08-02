@@ -31,13 +31,19 @@ export async function GET(req) {
   }
 
   if (!cookie) {
-    return NextResponse.json({ message: "Game not started" }, { status: 200 });
+    return NextResponse.json(
+      { dataSet: false, gameState: null },
+      { status: 200 }
+    );
   }
 
   try {
     const gameData = JSON.parse(cookie.value); // Access the value property
     console.log("Parsed gameData:", gameData);
-    return NextResponse.json(gameData);
+    return NextResponse.json(
+      { dataSet: true, gameState: gameData },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error parsing gameData:", error);
     return NextResponse.json(
