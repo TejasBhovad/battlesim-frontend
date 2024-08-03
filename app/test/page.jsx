@@ -1,19 +1,60 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
+
 const Page = () => {
   const [gameData, setGameData] = useState(null);
   const [message, setMessage] = useState("");
 
+  const responseHandler = async () => {
+    const aiData = {
+      battalions: [
+        {
+          type: "warrior",
+          count: 10,
+          position: [1, 1],
+        },
+        {
+          type: "archer",
+          count: 10,
+          position: [1, 2],
+        },
+      ],
+    };
+    try {
+      const response = await fetch("/api/init", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ aiInitData: aiData }),
+      });
+
+      const result = await response.json();
+      setMessage(result.message);
+    } catch (error) {
+      console.error("Error setting game data:", error);
+      setMessage("Failed to set game data.");
+    }
+  };
+
   // Function to set game data
   const setGameDataHandler = async () => {
     const data = {
-      gameData: {
-        troops: 100,
-        startPosition: {
-          x: 10,
-          y: 20,
-        },
+      userInitData: {
+        battalions: [
+          {
+            type: "warrior",
+            count: 10,
+            position: [1, 1],
+          },
+          {
+            type: "archer",
+            count: 10,
+            position: [1, 2],
+          },
+        ],
       },
     };
 
@@ -75,6 +116,12 @@ const Page = () => {
         >
           View GET
         </Link>
+        <button
+          onClick={responseHandler}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded"
+        >
+          Get Response
+        </button>
       </div>
       {message && <p className="mt-4 text-lg">{message}</p>}
       {gameData && (

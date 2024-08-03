@@ -31,7 +31,7 @@ Simple route that returns a message if the auth token is valid and API key is va
 ```bash
 curl -X POST http://localhost:3000/api/gemini \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer your_api_key" \
+  -H "Authorization: Bearer your_auth_key" \
   -d '{"prompt": "What is the capital of France?"}'
 ```
 

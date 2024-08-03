@@ -3,7 +3,7 @@
 export const AskGemini = async ({ prompt }) => {
   try {
     const authSecret = process.env.AUTH_SECRET;
-    const baseUrl = process.env.BASE_URL || "http://localhost:3000"; // Ensure BASE_URL is set in your environment variables
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Ensure BASE_URL is set in your environment variables
 
     const response = await fetch(`${baseUrl}/api/gemini`, {
       method: "POST",
@@ -16,7 +16,7 @@ export const AskGemini = async ({ prompt }) => {
 
     if (!response.ok) {
       const errorDetails = await response.text();
-      console.error("Response error details:", errorDetails);
+      console.error("Response error details:", response);
       throw new Error("Failed to process data");
     }
 
