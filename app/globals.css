@@ -11,3 +11,7 @@ html {
   color: #333;
   height: 100%;
 }
+/* app/styles/cursor.css */
+button {
+  cursor: none;
+}

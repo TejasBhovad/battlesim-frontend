@@ -23,7 +23,7 @@ export async function POST(req) {
       maxAge: 60 * 60, // 1 hour
     });
   }
-
+  // Module.call_getInitialGameState();
   return response;
 }
 

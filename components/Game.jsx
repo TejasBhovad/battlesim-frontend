@@ -32,8 +32,9 @@ export default function Game() {
             console.error("Error loading game script:", error);
           }
         };
+
+        loadGame();
       }
-      loadGame();
     }
 
     if (DEV_MODE) {

@@ -1,0 +1,38 @@
+/* FLARE CURSOR  */
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+body,
+* {
+  cursor: none;
+}
+
+.flare {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-5%, -5%);
+  z-index: 999999 !important;
+  pointer-events: none;
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .flare {
+    display: none;
+    width: 0;
+    height: 0;
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+  }
+}
+
+.flare.pointer {
+  display: block; /* Ensure the cursor is visible */
+  opacity: 1 !important; /* Ensure the cursor is fully opaque */
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
+}
