@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { fetchGameScript } from "@/actions/proxy";
 
-export default function Game() {
+export default function Game({ devMode, gameStatus, setGameStatus }) {
   const [isMounted, setIsMounted] = useState(false);
-  const DEV_MODE = true;
+  const DEV_MODE = devMode;
   useEffect(() => {
     setIsMounted(true);
 
@@ -15,8 +15,9 @@ export default function Game() {
         script.src = "/emscripten-build.js";
         script.id = "game-script";
         script.async = true;
-
+        setGameStatus("script loaded");
         document.body.appendChild(script);
+        setGameStatus("game loaded");
       }
     }
     if (!DEV_MODE && isMounted) {
@@ -28,12 +29,14 @@ export default function Game() {
             const scriptContent = await fetchGameScript();
 
             eval(scriptContent);
+            setGameStatus("game evaluated");
           } catch (error) {
             console.error("Error loading game script:", error);
           }
         };
 
         loadGame();
+        setGameStatus("game loaded");
       }
     }
 
@@ -53,7 +56,7 @@ export default function Game() {
   }
 
   return (
-    <div className="w-full flex items-center justify-center h-full bg-slate-600">
+    <div className="w-auto flex items-center justify-center h-auto ">
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
   );
