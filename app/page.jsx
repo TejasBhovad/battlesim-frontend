@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion"; // Import Framer Motion
 import DeveloperCard from "@/components/DeveloperCard";
-
+import GridSelect from "@/components/GridSelect";
 const DynamicGame = dynamic(() => import("../components/Game"), {
   ssr: false, // Disable server-side rendering for this component
   loading: () => (
@@ -16,7 +16,8 @@ const DynamicGame = dynamic(() => import("../components/Game"), {
 const Page = () => {
   const [gameStatus, setGameStatus] = useState("loading");
   const [devMode, setDevMode] = useState(process.env.NEXT_PUBLIC_DEV_MODE);
-
+  const [userState, setUserState] = useState(null);
+  const [aiState, setAiState] = useState(null);
   useEffect(() => {
     // This effect runs when the component mounts
     setGameStatus("downloaded");
@@ -25,10 +26,18 @@ const Page = () => {
   if (gameStatus === "loading") {
     return <div className="w-full h-full bg-slate-900"></div>;
   }
-
+  // UNCOMMENT
+  // if (userState === null) {
+  //   return (
+  //     <div className="w-full h-full bg-gray-800 items-center flex justify-center">
+  //       <GridSelect setUserState={setUserState} setAiState={setAiState} />
+  //     </div>
+  //   );
+  // }
   return (
     <div className="w-full h-full bg-gray-800 items-center flex justify-center">
       <DeveloperCard devMode={devMode} gameStatus={gameStatus} />
+
       <motion.div
         className="w-auto h-auto flex flex-col"
         initial={{ opacity: 0, scale: 0.8 }}

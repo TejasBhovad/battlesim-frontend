@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { model } from "@/utils/gemini";
 import { generateText } from "ai";
-
+import { generateObject } from "ai";
+import { z } from "zod";
+import { m } from "framer-motion";
 export async function POST(req) {
   try {
     const authHeader = req.headers.get("Authorization");
-
-    // Check if the Authorization header is set and matches the AUTH_SECRET
     const authSecret = process.env.AUTH_SECRET;
 
     if (!authHeader || authHeader !== `Bearer ${authSecret}`) {
@@ -14,17 +14,9 @@ export async function POST(req) {
     }
 
     const data = await req.json();
-
     const { gameState } = data;
-    console.log("gameState:", gameState);
 
-    // Validate gameState object
-    const requiredParams = [
-      "game_map",
-      "player_battlions",
-      "world_size",
-      "credits",
-    ];
+    const requiredParams = ["game_map", "player_battlions", "credits"];
     for (const param of requiredParams) {
       if (!gameState || !gameState[param]) {
         return NextResponse.json(
@@ -33,17 +25,55 @@ export async function POST(req) {
         );
       }
     }
-    const prompt = `The game state is as follows: ${JSON.stringify(gameState)}`;
-    const { text } = await generateText({
+
+    const prompt = `The game state is as follows: ${JSON.stringify(
+      gameState
+    )}. Return only a JSON object in the following format: 
+    const aiData = {
+      battalions: [
+        {
+          type: "warrior",
+          avgCenter: [1, 1],
+          troops: [
+            [1, 1],
+            [0, 1],
+            [1, 0],
+          ],
+        },
+        {
+          type: "archer",
+          avgCenter: [1, 2],
+          troops: [
+            [1, 2],
+            [0, 2],
+            [1, 3],
+          ],
+        },
+      ],
+    };`;
+
+    // const { text } = await generateText({
+    //   model: model,
+    //   prompt: prompt,
+    //   system:
+    //     "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
+    // });
+    const { object } = await generateObject({
       model: model,
+      schema: z.object({
+        battalions: z.array(
+          z.object({
+            type: z.string(),
+            avgCenter: z.array(z.number()),
+            troops: z.array(z.array(z.number())),
+          })
+        ),
+      }),
       prompt: prompt,
-      system:
-        "You are playing a game of Tower Defense. your aim is to defend your base from enemy battalions. You have a map of the game, your battalions, the world size, and your credits. Return a JSON object with positions to place your battalions. Each batallion has a type of archer or warriors",
     });
 
     return NextResponse.json({
-      response: "Success",
-      response: text,
+      object,
     });
   } catch (error) {
     return NextResponse.json(

@@ -38,7 +38,7 @@ const DeveloperCard = ({ devMode, gameStatus }) => {
           <span className="text-red-600">Development Mode</span>
           <ul className="list-none">
             <ItemList itemTitle="Game Status" itemValue={gameStatus} />
-            <ItemList itemTitle="Current FPS" itemValue={fps} />
+            <ItemList itemTitle="Current FPS" itemValue={fps / 2} />
           </ul>
         </motion.div>
       )}

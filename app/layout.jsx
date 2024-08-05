@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={atariFont.className}>
-        <FlareCursor />
+        {/* <FlareCursor /> */}
         {children}
       </body>
     </html>
