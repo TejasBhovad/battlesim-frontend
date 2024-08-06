@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const GridSelect = ({ credits: initialCredits = 500 }) => {
+const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   const rows = 15;
   const cols = 15;
   const totalTiles = rows * cols;
@@ -132,6 +132,10 @@ const GridSelect = ({ credits: initialCredits = 500 }) => {
     setBattalions(battalions);
   };
 
+  const handleUserSubmit = () => {
+    setUserState(battalions);
+  };
+
   const groupTroopsIntoClusters = (troops) => {
     const clusters = [];
 
@@ -224,12 +228,21 @@ const GridSelect = ({ credits: initialCredits = 500 }) => {
             </option>
           ))}
         </select>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded ml-4"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
+        {clusters.length > 0 ? (
+          <button
+            className="px-4 py-2 bg-green-500 text-white rounded ml-4"
+            onClick={handleUserSubmit}
+          >
+            Set User State
+          </button>
+        ) : (
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded ml-4"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        )}
       </div>
       <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-1 w-1/2 aspect-square relative">
         {gridItems.map((item, index) => (
