@@ -2,23 +2,72 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { InitGemini } from "@/actions/init-gemini";
 
 const Page = () => {
   const [gameData, setGameData] = useState(null);
   const [message, setMessage] = useState("");
+  const [aiState, setAiState] = useState(null);
+
+  const handleClick = async () => {
+    const gameState = {
+      game_map: {
+        size: [15, 15],
+        // castle position is the bottom right corner
+        castle: [14, 14],
+        // walls are placed around the castle
+        walls: [
+          [14, 13],
+          [13, 14],
+        ],
+      },
+      player_battlions: [
+        {
+          type: "archer",
+          troops: [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+          ],
+        },
+        {
+          type: "warrior",
+          troops: [
+            [0, 2],
+            [1, 2],
+            [0, 3],
+          ],
+        },
+      ],
+      credits: 100,
+    };
+    const response = await InitGemini({
+      gameState: gameState,
+    });
+    console.log("Response Init:", response);
+    setAiState(response.object); // Set AI state with the response
+  };
 
   const responseHandler = async () => {
     const aiData = {
       battalions: [
         {
           type: "warrior",
-          count: 10,
-          position: [1, 1],
+          avgCenter: [1, 1],
+          troops: [
+            [1, 1],
+            [0, 1],
+            [1, 0],
+          ],
         },
         {
           type: "archer",
-          count: 10,
-          position: [1, 2],
+          avgCenter: [1, 2],
+          troops: [
+            [1, 2],
+            [0, 2],
+            [1, 3],
+          ],
         },
       ],
     };
@@ -32,7 +81,7 @@ const Page = () => {
       });
 
       const result = await response.json();
-      setMessage(result.message);
+      setAiState(result.data);
     } catch (error) {
       console.error("Error setting game data:", error);
       setMessage("Failed to set game data.");
@@ -68,8 +117,8 @@ const Page = () => {
       });
 
       const result = await response.json();
-      setMessage(result.message);
-      setGameData(result.data);
+
+      setGameData(result.response);
     } catch (error) {
       console.error("Error setting game data:", error);
       setMessage("Failed to set game data.");
@@ -103,6 +152,12 @@ const Page = () => {
           Set Game Data
         </button>
         <button
+          onClick={handleClick}
+          className="bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded"
+        >
+          Init Game
+        </button>
+        <button
           onClick={deleteGameDataHandler}
           className="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded"
         >
@@ -129,6 +184,14 @@ const Page = () => {
           <h2 className="text-2xl font-semibold">Current Game Data:</h2>
           <pre className="bg-slate-700 p-4 rounded mt-2 overflow-x-auto">
             {JSON.stringify(gameData, null, 2)}
+          </pre>
+        </div>
+      )}
+      {aiState && (
+        <div className="mt-6">
+          <h2 className="text-2xl font-semibold">AI State:</h2>
+          <pre className="bg-slate-700 p-4 rounded mt-2 overflow-x-auto">
+            {JSON.stringify(aiState, null, 2)}
           </pre>
         </div>
       )}
