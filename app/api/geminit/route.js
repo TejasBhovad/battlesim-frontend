@@ -3,7 +3,7 @@ import { model } from "@/utils/gemini";
 import { generateText } from "ai";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { m } from "framer-motion";
+
 export async function POST(req) {
   try {
     const authHeader = req.headers.get("Authorization");
@@ -15,6 +15,7 @@ export async function POST(req) {
 
     const data = await req.json();
     const { gameState } = data;
+    console.log("Game state in API:", gameState);
 
     const requiredParams = ["game_map", "player_battlions", "credits"];
     for (const param of requiredParams) {
@@ -52,29 +53,34 @@ export async function POST(req) {
       ],
     };`;
 
-    // const { text } = await generateText({
-    //   model: model,
-    //   prompt: prompt,
-    //   system:
-    //     "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
-    // });
-    const { object } = await generateObject({
+    const { text } = await generateText({
       model: model,
-      schema: z.object({
-        battalions: z.array(
-          z.object({
-            type: z.string(),
-            avgCenter: z.array(z.number()),
-            troops: z.array(z.array(z.number())),
-          })
-        ),
-      }),
       prompt: prompt,
+      system:
+        "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
     });
+    // const { object } = await generateObject({
+    //   model: model,
+    //   schema: z.object({
+    //     battalions: z.array(
+    //       z.object({
+    //         type: z.string(),
+    //         avgCenter: z.array(z.number()),
+    //         troops: z.array(z.array(z.number())),
+    //       })
+    //     ),
+    //   }),
+    //   prompt: prompt,
+    // });
+    const cleanedText = text
+      .replace(/^```json/, "")
+      .replace(/```$/, "")
+      .trim();
 
-    return NextResponse.json({
-      object,
-    });
+    // Parse the cleaned string to a JavaScript object
+    const jsonObject = JSON.parse(cleanedText);
+    console.log("Response:", jsonObject);
+    return NextResponse.json(jsonObject);
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to process data", details: error.message },

@@ -55,11 +55,12 @@ const Page = () => {
       player_battlions: userState,
       credits: CREDITS,
     };
+    console.log("gameState Passed:", gameState);
     const response = await InitGemini({
       gameState: gameState,
     });
     console.log("Response:", response);
-    setAiState(response.object);
+    setAiState(response);
   };
 
   const setUserStateCookie = async (userState) => {

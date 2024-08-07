@@ -17,7 +17,7 @@ export const InitGemini = async ({ gameState }) => {
     if (!response.ok) {
       const errorDetails = await response.text();
       console.error("Response error details:", response);
-      throw new Error("Failed to process data");
+      throw new Error("Failed to process data", errorDetails);
     }
 
     return await response.json();
