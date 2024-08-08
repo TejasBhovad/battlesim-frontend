@@ -1,10 +1,27 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchGameScript } from "@/actions/proxy";
+import { useControls } from "leva";
 
 export default function Game({ devMode, gameStatus, setGameStatus }) {
   const [isMounted, setIsMounted] = useState(false);
+  const canvasRef = useRef(null);
   const DEV_MODE = devMode;
+
+  const defaultScaleFactor = window.innerWidth > 1080 ? 0.6 : 0.7;
+
+  const { scaleFactor } = useControls({
+    scaleFactor: {
+      value: defaultScaleFactor,
+      min: 0.1,
+      max: 1,
+      step: 0.1,
+    },
+  });
+
+  const canvasWidth = window.innerWidth * scaleFactor;
+  const canvasHeight = canvasWidth * (9 / 16);
+
   useEffect(() => {
     setIsMounted(true);
 
@@ -51,18 +68,30 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
     }
   }, [isMounted]);
 
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+    }
+  }, [scaleFactor]);
+
   if (!isMounted) {
     return null; // or a loading indicator
   }
 
   return (
-    <div className="w-full flex items-center justify-center h-full bg-red-400">
-      <canvas
-        id="canvas"
-        className="w-full aspect-video"
-        width={800}
-        height={600}
-      ></canvas>
+    <div className="w-full h-full flex items-center justify-center">
+      <div
+        className="relative w-full"
+        style={{ paddingBottom: "56.25%" /* 16:9 aspect ratio */ }}
+      >
+        <canvas
+          id="canvas"
+          ref={canvasRef}
+          className="absolute top-0 left-0 w-full h-full"
+        />
+      </div>
     </div>
   );
 }

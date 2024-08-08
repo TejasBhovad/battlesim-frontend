@@ -113,7 +113,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
         const index = troop.position.y * cols + troop.position.x;
         newGridItems[index] = {
           name: troop.type,
-          color: `hsl(${clusterIndex * 60}, 50%, 80%)`,
+          color: `hsl(${clusterIndex * 40}, 70%, 50%)`,
         };
       });
     });
@@ -210,7 +210,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
       className="flex flex-col items-center justify-center h-screen w-full"
       onMouseUp={handleMouseUp}
     >
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-4 max-w-96">
         <div className="mr-4 text-white">Credits: {remainingCredits}</div>
         <select
           value={selectedTroop.name}
@@ -244,7 +244,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
           </button>
         )}
       </div>
-      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-1 w-1/2 aspect-square relative">
+      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-0 sm:gap-0 w-full sm:w-1/2 aspect-square relative bg-white">
         {gridItems.map((item, index) => (
           <div
             key={index}
@@ -257,7 +257,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
             {/* Display color instead of troop name */}
             {item && (
               <div
-                className="w-8 h-8 rounded-full"
+                className="w-full h-full rounded-full"
                 style={{
                   backgroundColor: item.color,
                 }}
@@ -271,7 +271,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
           return (
             <div
               key={`center-${index}`}
-              className="absolute w-4 h-4 rounded-full border-2 border-black"
+              className="absolute w-2 h-2 sm:w-4 sm:h-4 rounded-full border-2 border-black"
               style={{
                 backgroundColor: `hsl(${index * 60}, 50%, 50%)`,
                 top: `${centerY * (100 / rows)}%`,
