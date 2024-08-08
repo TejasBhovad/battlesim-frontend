@@ -149,7 +149,7 @@ const Page = () => {
       <DeveloperCard devMode={devMode} gameStatus={gameStatus} />
 
       <motion.div
-        className="w-auto h-auto flex flex-col"
+        className="w-full h-full flex flex-col"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}

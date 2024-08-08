@@ -56,8 +56,13 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
   }
 
   return (
-    <div className="w-auto flex items-center justify-center h-auto ">
-      <canvas id="canvas" width="800" height="600"></canvas>
+    <div className="w-full flex items-center justify-center h-full bg-red-400">
+      <canvas
+        id="canvas"
+        className="w-full aspect-video"
+        width={800}
+        height={600}
+      ></canvas>
     </div>
   );
 }

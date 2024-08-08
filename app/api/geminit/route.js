@@ -57,7 +57,7 @@ export async function POST(req) {
       model: model,
       prompt: prompt,
       system:
-        "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions.Use all the credits you hsouldnt go overbudget. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
+        "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Dont use same troops distribution as user just use better formation. Use all the credits you hsouldnt go overbudget. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
     });
     // const { object } = await generateObject({
     //   model: model,
