@@ -6,16 +6,38 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   const totalTiles = rows * cols;
 
   const troopsList = [
-    { name: "Warrior", cost: 20, color: "bg-blue-500" },
-    { name: "Archer", cost: 10, color: "bg-green-500" },
-    { name: "Erase", cost: 0, color: "bg-gray-500" }, // Erase option
+    {
+      name: "Warrior",
+      cost: 20,
+      color: "bg-blue-500",
+      image: "/pixelart/warrior.png",
+    },
+    {
+      name: "Archer",
+      cost: 10,
+      color: "bg-green-500",
+      image: "/pixelart/archer.png",
+    },
+    {
+      name: "Erase",
+      cost: 0,
+      color: "bg-gray-500",
+      image: "/pixelart/grass.png",
+    }, // Erase option
   ];
+
   const [troops, setTroops] = useState([]);
   const [clusters, setClusters] = useState([]);
   const [battalions, setBattalions] = useState([]);
 
-  // State to hold items in each tile
-  const [gridItems, setGridItems] = useState(Array(totalTiles).fill(null));
+  // State to hold items in each tile, initialized with the "Erase" troop
+  const [gridItems, setGridItems] = useState(
+    Array(totalTiles).fill({
+      name: "Erase",
+      color: "bg-gray-500",
+      image: "/pixelart/grass.png",
+    })
+  );
 
   // State to hold the selected troop
   const [selectedTroop, setSelectedTroop] = useState(troopsList[0]);
@@ -43,19 +65,24 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
 
     if (selectedTroop.name === "Erase") {
       // If the selected troop is "Erase", remove the troop and restore credits
-      if (currentTroop) {
+      if (currentTroop.name !== "Erase") {
         const troopCost =
           troopsList.find((troop) => troop.name === currentTroop.name)?.cost ||
           0;
-        newGridItems[index] = null; // Remove the troop
+        newGridItems[index] = {
+          name: "Erase",
+          color: "bg-gray-500",
+          image: "/pixelart/grass.png",
+        }; // Set to "Erase" troop
         setRemainingCredits((prev) => prev + troopCost); // Restore credits
       }
-    } else if (!currentTroop || currentTroop.name !== selectedTroop.name) {
+    } else if (currentTroop.name !== selectedTroop.name) {
       // If the tile doesn't have the selected troop, add it
       if (remainingCredits >= selectedTroop.cost) {
         newGridItems[index] = {
           name: selectedTroop.name,
           color: selectedTroop.color,
+          image: selectedTroop.image,
         };
         setRemainingCredits((prev) => prev - selectedTroop.cost);
         setAlertShown(false); // Reset alert shown state
@@ -90,7 +117,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   useEffect(() => {
     // Find all non-null items and set them to troops with their respective positions and types
     const troops = gridItems.reduce((acc, item, index) => {
-      if (item) {
+      if (item.name !== "Erase") {
         acc.push({
           type: item.name,
           position: { x: index % cols, y: Math.floor(index / cols) },
@@ -114,6 +141,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
         newGridItems[index] = {
           name: troop.type,
           color: `hsl(${clusterIndex * 40}, 70%, 50%)`,
+          image: troopsList.find((t) => t.name === troop.type)?.image,
         };
       });
     });
@@ -254,14 +282,19 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
             onMouseDown={() => handleMouseDown(index)}
             onMouseEnter={() => handleMouseEnter(index)}
           >
-            {/* Display color instead of troop name */}
-            {item && (
-              <div
-                className="w-full h-full rounded-full"
+            {/* Display image instead of troop name */}
+            {item && item.image && (
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                draggable="false"
                 style={{
-                  backgroundColor: item.color,
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  imageRendering: "pixelated", // Ensures pixel art is rendered accurately
                 }}
-              ></div>
+              />
             )}
           </div>
         ))}
