@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import FlareCursor from "@/components/FlareCursor";
 const inter = Inter({ subsets: ["latin"] });
 import localFont from "next/font/local";
 export const metadata = {
@@ -13,10 +12,12 @@ const atariFont = localFont({
 });
 
 export default function RootLayout({ children }) {
+  const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE;
   return (
     <html lang="en">
       <body className={atariFont.className}>
         {/* <FlareCursor /> */}
+
         {children}
       </body>
     </html>

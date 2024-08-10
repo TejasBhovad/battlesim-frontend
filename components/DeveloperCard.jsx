@@ -17,7 +17,8 @@ const ItemList = ({ itemTitle, itemValue }) => {
   );
 };
 
-const DeveloperCard = ({ devMode, gameStatus }) => {
+const DeveloperCard = ({ gameStatus }) => {
+  const devMode = process.env.NEXT_PUBLIC_DEV_MODE === "true";
   const [fps, setFps] = useState(0);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const DeveloperCard = ({ devMode, gameStatus }) => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ scale: 0.5, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-slate-900 text-white text-start h-24 px-4 py-2 absolute flex flex-col text-lg gap-1 rounded-md top-2 left-2"
+          className="bg-slate-900 z-40 text-white text-start h-24 px-4 py-2 absolute flex flex-col text-lg gap-1 rounded-md top-2 left-2"
         >
           <span className="text-red-600">Development Mode</span>
           <ul className="list-none">

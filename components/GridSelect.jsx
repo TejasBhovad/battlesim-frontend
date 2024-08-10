@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
+  const router = useRouter();
   const rows = 15;
   const cols = 15;
   const totalTiles = rows * cols;
@@ -9,7 +10,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
     {
       name: "Warrior",
       cost: 20,
-      color: "bg-blue-500",
+      color: "bg-green-500",
       image: "/pixelart/warrior.png",
     },
     {
@@ -21,7 +22,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
     {
       name: "Erase",
       cost: 0,
-      color: "bg-gray-500",
+      color: "bg-green-500",
       image: "/pixelart/grass.png",
     }, // Erase option
   ];
@@ -29,6 +30,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   const [troops, setTroops] = useState([]);
   const [clusters, setClusters] = useState([]);
   const [battalions, setBattalions] = useState([]);
+  const [troopsSubmitted, setTroopsSubmitted] = useState(false);
 
   // State to hold items in each tile, initialized with the "Erase" troop
   const [gridItems, setGridItems] = useState(
@@ -100,15 +102,18 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   };
 
   const handleMouseDown = (index) => {
+    if (troopsSubmitted) return;
     setIsMouseDown(true);
     toggleItemInTile(index);
   };
 
   const handleMouseUp = () => {
+    if (troopsSubmitted) return;
     setIsMouseDown(false);
   };
 
   const handleMouseEnter = (index) => {
+    if (troopsSubmitted) return;
     if (isMouseDown) {
       toggleItemInTile(index);
     }
@@ -129,6 +134,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   }, [gridItems]);
 
   const handleSubmit = () => {
+    setTroopsSubmitted(true);
     // Group troops into clusters
     const clusters = groupTroopsIntoClusters(troops);
     setClusters(clusters);
@@ -238,8 +244,19 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
       className="flex flex-col items-center justify-center h-screen w-full"
       onMouseUp={handleMouseUp}
     >
-      <div className="flex items-center mb-4 max-w-96">
-        <div className="mr-4 text-white">Credits: {remainingCredits}</div>
+      <div className="flex items-center mb-4 max-w-96 gap-4">
+        {troopsSubmitted && (
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded h-8 flex items-center justify-center"
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
+        )}
+        {!troopsSubmitted && (
+          <div className="mr-4 text-white">Credits: {remainingCredits}</div>
+        )}
+
         <select
           value={selectedTroop.name}
           onChange={(e) => {
@@ -248,7 +265,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
             );
             setAlertShown(false); // Reset alert shown state when changing troop
           }}
-          className="px-2 py-1 border border-gray-300 rounded"
+          className="px-2 py-1 border border-gray-300 rounded h-8"
         >
           {troopsList.map((troop, index) => (
             <option key={index} value={troop.name}>
@@ -258,21 +275,22 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
         </select>
         {clusters.length > 0 ? (
           <button
-            className="px-4 py-2 bg-green-500 text-white rounded ml-4"
+            className="px-4 py-2 bg-blue-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
             onClick={handleUserSubmit}
           >
-            Set User State
+            Battle
           </button>
         ) : (
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded ml-4"
+            className="px-4 py-2 bg-blue-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
             onClick={handleSubmit}
+            disabled={troops.length === 0}
           >
             Submit
           </button>
         )}
       </div>
-      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-0 sm:gap-0 w-full sm:w-1/2 aspect-square relative bg-white">
+      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-0 sm:gap-0 w-full sm:w-1/2 aspect-square relative bg-green-600">
         {gridItems.map((item, index) => (
           <div
             key={index}

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion"; // Import Framer Motion
 import DeveloperCard from "@/components/DeveloperCard";
 import GridSelect from "@/components/GridSelect";
+import PlayPage from "@/components/PlayPage";
 const DynamicGame = dynamic(() => import("../components/Game"), {
   ssr: false, // Disable server-side rendering for this component
   loading: () => (
@@ -17,9 +18,13 @@ const DynamicGame = dynamic(() => import("../components/Game"), {
 const Page = () => {
   const CREDITS = 500;
   const [gameStatus, setGameStatus] = useState("loading");
-  const [devMode, setDevMode] = useState(process.env.NEXT_PUBLIC_DEV_MODE);
+  const [devMode, setDevMode] = useState(
+    process.env.NEXT_PUBLIC_DEV_MODE === "true"
+  );
   const [userState, setUserState] = useState(null);
   const [aiState, setAiState] = useState(null);
+
+  const [gameStarted, setGameStarted] = useState(false);
 
   const deleteGameDataHandler = async () => {
     try {
@@ -120,11 +125,15 @@ const Page = () => {
       setAiStateCookie(aiState);
     }
   }, [aiState]);
-
+  if (!gameStarted && !devMode) {
+    return (
+      <PlayPage setGameStarted={setGameStarted} gameStarted={gameStarted} />
+    );
+  }
   if (gameStatus === "loading") {
     return <div className="w-full h-full bg-slate-900"></div>;
   }
-  // UNCOMMENT
+
   if (userState === null) {
     return (
       <div className="w-full h-full bg-gray-800 items-center flex justify-center">

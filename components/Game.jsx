@@ -1,31 +1,14 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { fetchGameScript } from "@/actions/proxy";
-import { useControls } from "leva";
 
 export default function Game({ devMode, gameStatus, setGameStatus }) {
   const [isMounted, setIsMounted] = useState(false);
-  const canvasRef = useRef(null);
-  const DEV_MODE = devMode;
-
-  const defaultScaleFactor = window.innerWidth > 1080 ? 0.6 : 0.7;
-
-  const { scaleFactor } = useControls({
-    scaleFactor: {
-      value: defaultScaleFactor,
-      min: 0.1,
-      max: 1,
-      step: 0.1,
-    },
-  });
-
-  const canvasWidth = window.innerWidth * scaleFactor;
-  const canvasHeight = canvasWidth * (9 / 16);
 
   useEffect(() => {
     setIsMounted(true);
 
-    if (DEV_MODE && isMounted) {
+    if (devMode && isMounted) {
       // Check if the script already exists
       if (!document.getElementById("game-script")) {
         const script = document.createElement("script");
@@ -37,13 +20,14 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
         setGameStatus("game loaded");
       }
     }
-    if (!DEV_MODE && isMounted) {
+    if (!devMode && isMounted) {
       if (typeof window !== "undefined" && isMounted) {
         const loadGame = async () => {
           console.log("Loading game...");
 
           try {
             const scriptContent = await fetchGameScript();
+            // when fetching the script content show loading
 
             eval(scriptContent);
             setGameStatus("game evaluated");
@@ -57,7 +41,7 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
       }
     }
 
-    if (DEV_MODE) {
+    if (devMode && isMounted) {
       // Cleanup function to remove the script on unmount
       return () => {
         const script = document.getElementById("game-script");
