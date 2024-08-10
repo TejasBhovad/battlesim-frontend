@@ -68,30 +68,13 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
     }
   }, [isMounted]);
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
-    }
-  }, [scaleFactor]);
-
   if (!isMounted) {
     return null; // or a loading indicator
   }
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div
-        className="relative w-full"
-        style={{ paddingBottom: "56.25%" /* 16:9 aspect ratio */ }}
-      >
-        <canvas
-          id="canvas"
-          ref={canvasRef}
-          className="absolute top-0 left-0 w-full h-full"
-        />
-      </div>
+      <canvas id="canvas" width={800} height={600} />
     </div>
   );
 }
