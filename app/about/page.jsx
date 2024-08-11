@@ -177,7 +177,7 @@ const Page = () => {
               How it's Made?
             </motion.h1>
             <motion.p
-              className="text-lg text-left w-full h-auto"
+              className="text-lg text-left w-full h-auto "
               initial={{ opacity: 0, y: -10 }}
               animate={{
                 opacity: 1,
@@ -185,9 +185,27 @@ const Page = () => {
               }}
               transition={{ duration: 0.25, delay: 0.6 }}
             >
-              The actual game was created in C++ using Raylib, then compiled to
-              WASM and is finally being rendered on the web using Next.js on
-              Vercel.
+              The actual game was created in C++ using
+              <Link href="https://emscripten.org/">
+                <span className="text-red-500/70 hover:underline cursor-pointer pl-2">
+                  Emscripten{" "}
+                </span>
+              </Link>
+              and
+              {/* raylib */}
+              <Link href="https://www.raylib.com/">
+                <span className="text-red-500/70 hover:underline cursor-pointer pl-2">
+                  raylib
+                </span>
+              </Link>
+              , then compiled to WASM and is finally being rendered on the web
+              using
+              <Link href="https://nextjs.org/">
+                <span className="text-red-500/70 hover:underline cursor-pointer pl-2">
+                  Next.js{" "}
+                </span>
+              </Link>
+              on Vercel.
             </motion.p>
             <motion.div
               variants={popInVariants}
