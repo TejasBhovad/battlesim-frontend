@@ -1,4 +1,6 @@
 "use client";
+import GeminiLabel from "./GeminiLabel";
+import LogoCard from "./LogoCard";
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,11 +27,11 @@ const Navbar = () => {
   return (
     <nav className="w-full h-14 min-h-14 bg-white/10 rounded-full px-8 md:px-10 flex items-center justify-between relative">
       <Link href="/" className="hover:opacity-85 transition-all">
-        <span className="text-white text-xl md:text-2xl">Home</span>
+        <LogoCard />
       </Link>
       <div className="md:hidden">
         <button
-          className="text-white text-xl"
+          className="text-white text-lg"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           Menu
@@ -37,10 +39,10 @@ const Navbar = () => {
       </div>
       <div className="hidden md:flex space-x-8">
         <Link href="/about" className="hover:opacity-85 transition-all">
-          <span className="text-white text-xl md:text-2xl">About</span>
+          <span className="text-white text-lg md:text-xl">About</span>
         </Link>
         <Link href="/source-code" className="hover:opacity-85 transition-all">
-          <span className="text-white text-xl md:text-2xl">Source Code</span>
+          <span className="text-white text-lg md:text-xl">Source Code</span>
         </Link>
       </div>
       <AnimatePresence>
@@ -54,7 +56,7 @@ const Navbar = () => {
           >
             <motion.div variants={itemVariants}>
               <Link href="/about" className="hover:opacity-85 transition-all">
-                <span className="text-white text-xl md:text-2xl">About</span>
+                <span className="text-white text-lg md:text-xl">About</span>
               </Link>
             </motion.div>
             <motion.div variants={itemVariants}>
@@ -62,7 +64,7 @@ const Navbar = () => {
                 href="/source-code"
                 className="hover:opacity-85 transition-all"
               >
-                <span className="text-white text-xl md:text-2xl">
+                <span className="text-white text-lg md:text-xl">
                   Source Code
                 </span>
               </Link>
@@ -85,7 +87,13 @@ const PlayPage = ({ setGameStarted }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          BattleSimAI
+          <span className="w-auto text-5xl flex items-center justify-center select-none">
+            <span className="text-white">b</span>
+            <span className="text-red-500/70">A</span>
+            <span className="text-white">ttleS</span>
+            <span className="text-red-500/70">i</span>
+            <span className="text-white">m</span>
+          </span>
         </motion.span>
         <motion.iframe
           className="w-full sm:w-3/4 aspect-video rounded-md overflow-hidden"
@@ -103,14 +111,15 @@ const PlayPage = ({ setGameStarted }) => {
           onClick={() => {
             setGameStarted(true);
           }}
-          initial={{ scale: 0.9 }}
-          whileHover={{ scale: 1.05 }}
+          initial={{ scale: 0.95 }}
+          whileHover={{ scale: 1 }}
           whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          transition={{ type: "spring", stiffness: 100 }}
         >
           Start Game
         </motion.button>
       </div>
+      <GeminiLabel />
     </div>
   );
 };
