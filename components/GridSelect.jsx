@@ -169,52 +169,78 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   const handleUserSubmit = () => {
     setUserState(battalions);
   };
-
   const groupTroopsIntoClusters = (troops) => {
     const clusters = [];
 
-    // Helper function to find cluster by troop
-    const findClusterByTroop = (troop) => {
-      return clusters.find((cluster) =>
-        cluster.some(
-          (t) =>
-            t.type === troop.type &&
-            Math.abs(t.position.x - troop.position.x) <= 1 &&
-            Math.abs(t.position.y - troop.position.y) <= 1
-        )
+    // Helper function to check if troops are in a continuous straight line
+    const areInLine = (troops) => {
+      if (troops.length < 2) return true;
+
+      const xCoords = troops.map((t) => t.position.x);
+      const yCoords = troops.map((t) => t.position.y);
+
+      // Check for vertical, horizontal, or diagonal alignment
+      const isVertical = new Set(xCoords).size === 1;
+      const isHorizontal = new Set(yCoords).size === 1;
+      const isDiagonal =
+        new Set(xCoords.map((x, i) => x - yCoords[i])).size === 1;
+
+      // Check if troops are in a continuous line
+      if (isVertical || isHorizontal) {
+        return (
+          Math.max(...xCoords) - Math.min(...xCoords) === troops.length - 1 ||
+          Math.max(...yCoords) - Math.min(...yCoords) === troops.length - 1
+        );
+      } else if (isDiagonal) {
+        return (
+          Math.max(...xCoords) - Math.min(...xCoords) === troops.length - 1 &&
+          Math.max(...yCoords) - Math.min(...yCoords) === troops.length - 1
+        );
+      }
+
+      return false;
+    };
+
+    // Helper function to calculate the center of a cluster
+    const getClusterCenter = (cluster) => {
+      const xCoords = cluster.map((t) => t.position.x);
+      const yCoords = cluster.map((t) => t.position.y);
+      const centerX = Math.round(
+        (Math.max(...xCoords) + Math.min(...xCoords)) / 2
       );
+      const centerY = Math.round(
+        (Math.max(...yCoords) + Math.min(...yCoords)) / 2
+      );
+      return { x: centerX, y: centerY };
     };
 
     // Group troops into clusters
     troops.forEach((troop) => {
-      let cluster = findClusterByTroop(troop);
-      if (!cluster) {
-        cluster = [];
-        clusters.push(cluster);
-      }
-      cluster.push(troop);
-    });
+      let suitableCluster = null;
 
-    // Merge clusters if they share any troops of the same type
-    let merged = true;
-    while (merged) {
-      merged = false;
-      for (let i = 0; i < clusters.length; i++) {
-        for (let j = i + 1; j < clusters.length; j++) {
-          if (
-            clusters[i].some(
-              (troop) => findClusterByTroop(troop) === clusters[j]
-            )
-          ) {
-            clusters[i] = [...new Set([...clusters[i], ...clusters[j]])];
-            clusters.splice(j, 1);
-            merged = true;
-            break;
-          }
+      // Try to find an existing cluster to merge into
+      for (let cluster of clusters) {
+        const clusterCenter = getClusterCenter(cluster);
+        const distance = Math.max(
+          Math.abs(troop.position.x - clusterCenter.x),
+          Math.abs(troop.position.y - clusterCenter.y)
+        );
+
+        // Check if the troop can be added to this cluster
+        if (areInLine([...cluster, troop]) && distance <= 2) {
+          suitableCluster = cluster;
+          break;
         }
-        if (merged) break;
       }
-    }
+
+      // If a suitable cluster was found, add the troop to it
+      if (suitableCluster) {
+        suitableCluster.push(troop);
+      } else {
+        // Otherwise, create a new cluster
+        clusters.push([troop]);
+      }
+    });
 
     return clusters;
   };
