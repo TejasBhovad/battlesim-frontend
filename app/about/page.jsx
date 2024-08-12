@@ -53,7 +53,10 @@ const Navbar = () => {
         <Link href="/about" className="hover:opacity-85 transition-all">
           <span className="text-white text-lg md:text-xl">About</span>
         </Link>
-        <Link href="/source-code" className="hover:opacity-85 transition-all">
+        <Link
+          href="https://github.com/erga-labs/gemini-battle-sim"
+          className="hover:opacity-85 transition-all"
+        >
           <span className="text-white text-lg md:text-xl">Source Code</span>
         </Link>
       </div>
@@ -73,7 +76,7 @@ const Navbar = () => {
             </motion.div>
             <motion.div variants={itemVariants}>
               <Link
-                href="/source-code"
+                href="https://github.com/erga-labs/gemini-battle-sim"
                 className="hover:opacity-85 transition-all"
               >
                 <span className="text-white text-lg md:text-xl">

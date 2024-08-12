@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { fetchGameScript } from "@/actions/proxy";
-
+import ControlsTooltip from "./ControlsTooltip";
 export default function Game({ devMode, gameStatus, setGameStatus }) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -57,8 +57,9 @@ export default function Game({ devMode, gameStatus, setGameStatus }) {
   }
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center bg-black">
       <canvas id="canvas" width={800} height={600} />
+      <ControlsTooltip />
     </div>
   );
 }

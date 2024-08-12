@@ -131,12 +131,12 @@ const Page = () => {
     );
   }
   if (gameStatus === "loading") {
-    return <div className="w-full h-full bg-slate-900"></div>;
+    return <div className="w-full h-full bg-black"></div>;
   }
 
   if (userState === null) {
     return (
-      <div className="w-full h-full bg-gray-800 items-center flex justify-center">
+      <div className="w-full h-full bg-black items-center flex justify-center">
         <GridSelect
           setUserState={setUserState}
           setAiState={setAiState}
@@ -148,13 +148,13 @@ const Page = () => {
   if (aiState === null) {
     // loading for aiState
     return (
-      <div className="w-full h-full bg-gray-800 items-center flex justify-center">
+      <div className="w-full h-full bg-black items-center flex justify-center">
         <span className="text-white text-xl py-2 px-4">Loading...</span>
       </div>
     );
   }
   return (
-    <div className="w-full h-full bg-gray-800 items-center flex justify-center">
+    <div className="w-full h-full bg-black items-center flex justify-center">
       <DeveloperCard devMode={devMode} gameStatus={gameStatus} />
 
       <motion.div

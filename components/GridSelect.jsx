@@ -9,13 +9,13 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
   const troopsList = [
     {
       name: "Warrior",
-      cost: 20,
+      cost: 25,
       color: "bg-green-500",
       image: "/pixelart/warrior.png",
     },
     {
       name: "Archer",
-      cost: 10,
+      cost: 35,
       color: "bg-green-500",
       image: "/pixelart/archer.png",
     },
@@ -267,7 +267,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-screen w-full"
+      className="flex flex-col items-center justify-center h-screen w-full bg-black"
       onMouseUp={handleMouseUp}
     >
       <div className="flex items-center mb-4 max-w-96 gap-4">
@@ -291,7 +291,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
             );
             setAlertShown(false); // Reset alert shown state when changing troop
           }}
-          className="px-2 py-1 border border-gray-300 rounded h-8"
+          className="px-2 py-1  border-[1px] border-black/5 rounded h-8"
         >
           {troopsList.map((troop, index) => (
             <option key={index} value={troop.name}>
@@ -301,14 +301,14 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
         </select>
         {clusters.length > 0 ? (
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
+            className="px-4 py-2 bg-green-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
             onClick={handleUserSubmit}
           >
             Battle
           </button>
         ) : (
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
+            className="px-4 py-2 bg-green-500 text-white rounded  disabled:opacity-50 h-8 flex items-center justify-center"
             onClick={handleSubmit}
             disabled={troops.length === 0}
           >
@@ -320,7 +320,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
         {gridItems.map((item, index) => (
           <div
             key={index}
-            className={`border border-gray-300 flex items-center justify-center cursor-pointer ${
+            className={`border-[1px] border-black/5 flex items-center justify-center cursor-pointer ${
               item ? item.color : "bg-white"
             }`}
             onMouseDown={() => handleMouseDown(index)}
@@ -348,7 +348,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
           return (
             <div
               key={`center-${index}`}
-              className="absolute w-2 h-2 sm:w-4 sm:h-4 rounded-full border-2 border-black"
+              className="absolute bg-green-400 w-2 h-2 sm:w-4 sm:h-4 rounded-full border-2 border-black"
               style={{
                 backgroundColor: `hsl(${index * 60}, 50%, 50%)`,
                 top: `${centerY * (100 / rows)}%`,
