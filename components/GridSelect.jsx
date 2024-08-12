@@ -267,10 +267,11 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-screen w-full bg-black"
+      className="flex flex-col items-center justify-center h-full w-full bg-black gap-2 py-4"
       onMouseUp={handleMouseUp}
     >
-      <div className="flex items-center mb-4 max-w-96 gap-4">
+      <span className="text-white text-4xl py-2">Place Troops</span>
+      <div className="flex items-center max-w-7xl gap-4">
         {troopsSubmitted && (
           <button
             className="px-4 py-2 bg-red-500 text-white rounded h-8 flex items-center justify-center"
@@ -316,7 +317,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
           </button>
         )}
       </div>
-      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-0 sm:gap-0 w-full sm:w-1/2 aspect-square relative bg-green-600">
+      <div className="grid grid-cols-[repeat(15,1fr)] grid-rows-[repeat(15,1fr)] gap-0 sm:gap-0 w-full sm:w-1/3 aspect-square relative bg-green-600">
         {gridItems.map((item, index) => (
           <div
             key={index}

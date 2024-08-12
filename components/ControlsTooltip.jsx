@@ -37,9 +37,9 @@ const ControlsTooltip = () => {
         {showTooltip && (
           <motion.div
             className="absolute bottom-4 flex text-white/50 gap-2 rounded-sm px-4 py-2 max-w-full overflow-hidden"
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20, duration: 0.1 }}
+            exit={{ opacity: 0, y: 10, duration: 0 }}
             transition={{ duration: 0.3 }}
           >
             <div className="flex flex-col items-center justify-center gap-2 p-4 rounded-sm bg-white/10">
@@ -67,6 +67,32 @@ const ControlsTooltip = () => {
                 alt="Pause Control"
               />
               <span>Use Space to Pause</span>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2 p-4 bg-white/10 rounded-sm">
+              <Image
+                src="/pixelart/mouse.png"
+                style={{
+                  imageRendering: "pixelated",
+                }}
+                width={64}
+                height={64}
+                className="h-12 w-auto p-2"
+                alt="Pause Control"
+              />
+              <span>Use Scroll to Zoom</span>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2 p-4 bg-white/10 rounded-sm">
+              <Image
+                src="/ui/pointer.png"
+                style={{
+                  imageRendering: "pixelated",
+                }}
+                width={64}
+                height={64}
+                className="h-12 w-auto p-2"
+                alt="Pause Control"
+              />
+              <span>Click to view stats</span>
             </div>
           </motion.div>
         )}
