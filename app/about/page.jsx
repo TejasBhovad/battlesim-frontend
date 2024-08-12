@@ -177,7 +177,7 @@ const Page = () => {
               }}
               transition={{ duration: 0.25, delay: 0.5 }}
             >
-              How it's Made?
+              How is it Made?
             </motion.h1>
             <motion.p
               className="text-lg text-left w-full h-auto "
