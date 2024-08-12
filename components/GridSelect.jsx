@@ -277,7 +277,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
             className="px-4 py-2 bg-red-500 text-white rounded h-8 flex items-center justify-center"
             onClick={() => router.back()}
           >
-            Back
+            Home
           </button>
         )}
         {!troopsSubmitted && (

@@ -83,7 +83,7 @@ const PlayPage = ({ setGameStarted }) => {
   return (
     <div className="w-full h-full flex bg-black flex-col items-center p-12">
       <Navbar />
-      <div className="max-w-7xl w-full h-full items-center justify-start flex flex-col gap-12 pt-36">
+      <div className="max-w-7xl w-full h-full items-center justify-start flex flex-col gap-12 pt-36 pb-12">
         <motion.span
           className="w-full text-5xl h-auto flex items-center justify-center text-white"
           initial={{ opacity: 0, y: -20 }}
@@ -110,7 +110,7 @@ const PlayPage = ({ setGameStarted }) => {
           transition={{ duration: 0.75 }}
         ></motion.iframe>
         <motion.button
-          className="w-auto px-8 h-16 border-2 border-white/10 text-white text-2xl rounded-md hover:bg-white/15 transition-colors"
+          className="w-auto px-8 min-h-14 h-16 border-2 border-white/10 text-white text-2xl rounded-md hover:bg-white/15 transition-colors"
           onClick={() => {
             setGameStarted(true);
           }}
