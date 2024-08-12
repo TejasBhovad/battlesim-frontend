@@ -28,7 +28,7 @@ export async function POST(req) {
     }
 
     const prompt = `The game state is as follows: ${JSON.stringify(gameState)}. 
-    and credits: ${gameState.credits}.
+    and credits: ${gameState.credits - 100}.
     Return only a JSON object in the following format: 
     const aiData = {
       battalions: [
@@ -57,7 +57,7 @@ export async function POST(req) {
       model: model,
       prompt: prompt,
       system:
-        "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Dont use same troops distribution as user just use better formation. Use all the credits you hsouldnt go overbudget. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
+        "You are playing a game of Tower Defense. Your aim is to defend your base from enemy battalions. Dont use same troops distribution as user just use better formation, put warriors in front and archers in the back. Use all the credits you shouldn't go overbudget. Return only a JSON object with the specified format, dont include it in anything lese direct json object.",
     });
     // const { object } = await generateObject({
     //   model: model,

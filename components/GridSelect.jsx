@@ -91,7 +91,7 @@ const GridSelect = ({ credits: initialCredits = 500, setUserState }) => {
       } else {
         // If there are not enough credits, show an alert if not already shown
         if (!alertShown) {
-          alert("Insufficient credits!");
+          // alert("Insufficient credits!");
           setAlertShown(true); // Set alert shown state
         }
       }
