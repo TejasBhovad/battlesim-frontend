@@ -100,7 +100,7 @@ const PlayPage = ({ setGameStarted }) => {
         </motion.span>
         <motion.iframe
           className="w-full sm:w-3/4 aspect-video rounded-md overflow-hidden"
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          src="https://www.youtube.com/embed/b0tQLUNYoZw"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
