@@ -39,7 +39,7 @@ export async function POST(req) {
       model: model,
       prompt: prompt,
       system:
-        "You are playing a game of Tower Defense. Choose what you would do: attack, fallback, or defend the walls. Return only the action as a string.",
+        "You are playing a game of Tower Defense. Choose what you would do: attack, fallback, or defend the walls,Warriors should be in front; Archers behind them. Return only the action as a string.",
     });
 
     // Clean the text response
