@@ -1,10 +1,14 @@
 # AI Battles Frontend
 
+https://github.com/user-attachments/assets/c73de00f-dd06-49f8-9952-8ab362fcfb98
+
 frontend part for AI battlesim project https://github.com/erga-labs/ant-sim-project
 
 > Yes the name "frontend" is misleading cause we also create API routes here but the actual game simulation takes place in Raylib(CPP)
 
-## Tech stack
+## Tech 
+
+stack
 
 - Next.js
 - Vercel
