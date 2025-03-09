@@ -7,12 +7,12 @@ import DeveloperCard from "@/components/DeveloperCard";
 import GridSelect from "@/components/GridSelect";
 import PlayPage from "@/components/PlayPage";
 const DynamicGame = dynamic(() => import("../components/Game"), {
-  ssr: false, // Disable server-side rendering for this component
+  ssr: false,
   loading: () => (
     <div className="w-auto h-auto bg-slate-700 flex items-center justify-center">
       <span className="text-white text-xl py-2 px-4">Loading...</span>
     </div>
-  ), // Optional loading indicator
+  ),
 });
 
 const Page = () => {
